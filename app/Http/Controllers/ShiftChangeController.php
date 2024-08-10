@@ -20,6 +20,9 @@ class ShiftChangeController extends Controller
 
             foreach ($shiftChange as $data) {
                 $shiftChangeData[] = [
+                    'id' => $data->id,
+                    'user_id' => $data->user_id,
+                    'shift_id' => $data->shift_id,
                     'name' => $data->user->name,
                     'shift' => $data->shift->name,
                     'status' => $data->status,

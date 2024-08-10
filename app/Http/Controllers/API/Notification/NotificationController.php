@@ -22,6 +22,8 @@ class NotificationController extends Controller
 
             foreach ($notification as $data) {
                 $notificationData[] = [
+                    'id' => $data->id,
+                    'user_id' => $data->user_id,
                     'user' => $data->user->name,
                     'type' => $data->type,
                     'message' => $data->message,

@@ -16,7 +16,7 @@ class ProjectController extends Controller
     public function index()
     {
         try {
-            $project = Project::all();
+            $project = Project::orderBy('start', 'asc')->get();
 
             return response()->json([
                 'message' => 'Project retrieved successfully',
@@ -44,9 +44,13 @@ class ProjectController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string',
+                'start' => 'required',
+                'status' => 'required'
             ], [
                 'name.required' => 'Name is required',
-                'name.string' => 'Name must be a string'
+                'name.string' => 'Name must be a string',
+                'start.required' => 'Start date is required',
+                'status.required' => 'Status is required',
             ]);
 
             if ($validator->fails()) {
@@ -57,6 +61,8 @@ class ProjectController extends Controller
 
             $project = new Project();
             $project->name = request('name');
+            $project->start = request('start');
+            $project->status = request('status');
             $project->save();
 
             return response()->json([
@@ -66,7 +72,7 @@ class ProjectController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 'errors' => [
-                    'message' => 'Failed to create project'
+                    'message' => $e->getMessage()
                 ]
             ]);
         }
@@ -96,9 +102,13 @@ class ProjectController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string',
+                'start' => 'required',
+                'status' => 'required'
             ], [
                 'name.required' => 'Name is required',
-                'name.string' => 'Name must be a string'
+                'name.string' => 'Name must be a string',
+                'start.required' => 'Start date is required',
+                'status.required' => 'Status is required',
             ]);
 
             if ($validator->fails()) {
@@ -109,6 +119,8 @@ class ProjectController extends Controller
 
             $project =  Project::find($id);
             if (request('name')) $project->name = request('name');
+            if ((request('start'))) $project->start = request('start');
+            if ((request('status'))) $project->status = request('status');
             $project->save();
 
             return response()->json([

@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->dateTime('start');
+            $table->enum('status', ['planning', 'on progress', 'completed']);
             $table->timestamps();
         });
     }

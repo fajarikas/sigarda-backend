@@ -16,10 +16,13 @@ class ScheduledUserController extends Controller
         try {
             $scheduledUser = ScheduledUser::all();
 
-            // $scheduledUserData = [];
+            $scheduledUserData = [];
 
             foreach ($scheduledUser as $data) {
                 $scheduledUserData[] = [
+                    'id' => $data->id,
+                    'schedule_id' => $data->schedule_id,
+                    'user_id' => $data->user_id,
                     'schedule' => $data->schedule->name,
                     'user' => $data->user->name,
                 ];
@@ -134,7 +137,7 @@ class ScheduledUserController extends Controller
             $scheduledUser->save();
 
             return response()->json([
-                'message' => 'Scheduled User created successfully',
+                'message' => 'Scheduled User updated successfully',
                 'data' => $scheduledUser
             ]);
         } catch (Exception $e) {

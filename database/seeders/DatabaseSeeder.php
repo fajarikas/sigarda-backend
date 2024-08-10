@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             'username' => 'superadmin',
             'role' => 'super admin',
             'email' => 'superadmin@mail.com',
+            'gender' => 'men',
             'password' => bcrypt('super123')
         ]);
     }
