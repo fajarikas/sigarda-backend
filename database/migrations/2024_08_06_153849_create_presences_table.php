@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('presences', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->enum('status', ['Hadir', 'Tidak Hadir']);
+            $table->date('attendance')->nullable();
             $table->time('check_in')->nullable();
             $table->time('check_out')->nullable();
             $table->timestamps();

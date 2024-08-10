@@ -46,15 +46,13 @@ class LocationController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'office_name' => 'required|string',
-                'latitude'  => 'required|integer',
-                'longitude' => 'required|integer',
+                'latitude'  => 'required',
+                'longitude' => 'required',
             ], [
                 'office_name.required' => 'Office Name is required',
                 'office_name.string' => 'Office Name must be a string',
                 'latitude.required' => 'Latitude is required',
-                'latitude.integer' => 'Latitude must be an integer',
                 'longitude.required' => 'Longitude is required',
-                'longitude.integer' => 'Longitude must be an integer',
             ]);
 
             if ($validator->fails()) {
@@ -106,15 +104,13 @@ class LocationController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'office_name' => 'required|string',
-                'latitude'  => 'required|integer',
-                'longitude' => 'required|integer',
+                'latitude'  => 'required',
+                'longitude' => 'required'
             ], [
                 'office_name.required' => 'Office Name is required',
                 'office_name.string' => 'Office Name must be a string',
                 'latitude.required' => 'Latitude is required',
-                'latitude.integer' => 'Latitude must be an integer',
                 'longitude.required' => 'Longitude is required',
-                'longitude.integer' => 'Longitude must be an integer',
             ]);
 
             if ($validator->fails()) {

@@ -15,19 +15,22 @@ class PresenceController extends Controller
     public function index()
     {
         try {
-            $presence = Presence::all();
+            $presence = Presence::orderBy('created_at', 'asc')->get();
 
             foreach ($presence as $data) {
                 $presenceData[] = [
+                    'id' => $data->id,
                     'user' => $data->user->name,
-                    'status' => $data->status,
+                    'user_id' => $data->user_id,
+                    'attendance' => $data->attendance,
                     'check_in' => $data->check_in,
                     'check_out' => $data->check_out,
+                    'date' => $data->created_at->format('Y-m-d'),
                 ];
             }
             return response()->json([
                 'message' => 'Presence retrieved successfully',
-                'presence' => $presenceData
+                'data' => $presenceData
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -53,9 +56,8 @@ class PresenceController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'user_id' => 'required|integer',
-                'status' => 'required|in:Hadir, Tidak Hadir',
-                'check_in' => 'required|date_format:H:i:s',
-                'check_out' => 'required|date_format:H:i:s',
+                'attendance' => 'required',
+
             ]);
 
             if ($validator->fails()) {
@@ -66,14 +68,14 @@ class PresenceController extends Controller
 
             $presence = new Presence();
             $presence->user_id = request('user_id');
-            $presence->status = request('status');
+            $presence->attendance = request('attendance');
             $presence->check_in = request('check_in');
             $presence->check_out = request('check_out');
             $presence->save();
 
             return response()->json([
                 'message' => 'Presence created successfully',
-                'presence' => $presence
+                'data' => $presence
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -103,43 +105,46 @@ class PresenceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Presence $presence)
+    public function update(Request $request, $id)
     {
         try {
             $validator = Validator::make($request->all(), [
                 'user_id' => 'required|integer',
-                'status' => 'required|in:Hadir, Tidak Hadir',
-                'check_in' => 'required|date_format:H:i:s',
-                'check_out' => 'required|date_format:H:i:s',
+                'attendance' => 'required',
+                'check_in' => 'nullable',
+                'check_out' => 'nullable',
             ]);
 
             if ($validator->fails()) {
                 return response()->json([
                     'errors' => $validator->errors()
-                ]);
+                ], 422); // Status code 422 for Unprocessable Entity
             }
 
-            $presence->user_id = request('user_id');
-            $presence->status = request('status');
-            $presence->check_in = request('check_in');
-            $presence->check_out = request('check_out');
+            $presence = Presence::find($id);
 
-            if (request('user_id')) $presence->user_id = request('user_id');
-            if (request('status')) $presence->status = request('status');
-            if (request('check_in')) $presence->check_in = request('check_in');
-            if (request('check_out')) $presence->check_out = request('check_out');
+            if (!$presence) {
+                return response()->json([
+                    'error' => 'Presence not found'
+                ], 404); // Status code 404 for Not Found
+            }
+
+            $presence->user_id = $request->input('user_id');
+            $presence->attendance = $request->input('attendance');
+            $presence->check_in = $request->input('check_in');
+            $presence->check_out = $request->input('check_out');
             $presence->save();
 
             return response()->json([
                 'message' => 'Presence updated successfully',
-                'presence' => $presence
+                'data' => $presence
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'errors' => [
+                'error' => [
                     'message' => $e->getMessage()
                 ]
-            ]);
+            ], 500); // Status code 500 for Internal Server Error
         }
     }
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('description');
+            $table->longText('description');
             $table->dateTime('date');
             $table->string('type');
             $table->string('place');

@@ -46,8 +46,8 @@ class ShiftController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string',
-                'start' => 'required|date_format:H:i:s',
-                'end' => 'required|date_format:H:i:s',
+                'start' => 'required',
+                'end' => 'required',
             ], [
                 'name.required' => 'Name is required',
                 'name.string' => 'Name must be a string',
@@ -104,8 +104,8 @@ class ShiftController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string',
-                'start' => 'required|date_format:H:i:s',
-                'end' => 'required|date_format:H:i:s',
+                'start' => 'required',
+                'end' => 'required',
             ], [
                 'name.required' => 'Name is required',
                 'name.string' => 'Name must be a string',

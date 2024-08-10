@@ -19,10 +19,15 @@ class MeetingController extends Controller
         try {
             $meeting = Meeting::all();
 
+            $meetingData = [];
+
             foreach ($meeting as $data) {
                 $meetingData[] = [
+                    'id' => $data->id,
                     'project' => $data->project->name,
+                    'project_id' => $data->project_id,
                     'user' => $data->user->name,
+                    'user_id' => $data->user_id,
                     'description' => $data->description,
                     'date' => $data->date,
                     'type' => $data->type,
@@ -57,23 +62,24 @@ class MeetingController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'project_id' => 'required|integer',
-                'user_id' => 'required|integer',
+                'project_id' => 'required|integer|exists:projects,id',
+                'user_id' => 'required|integer|exists:users,id',
                 'description' => 'required|string',
                 'date' => 'required|date',
-                'type' => 'required|in:Online,Offline',
+                'type' => 'required',
                 'place' => 'required',
             ], [
                 'project_id.required' => 'Project ID is required',
                 'project_id.integer' => 'Project ID must be an integer',
+                'project_id.exists' => 'Project ID must exist in projects table',
                 'user_id.required' => 'User ID is required',
                 'user_id.integer' => 'User ID must be an integer',
+                'user_id.exists' => 'User ID must exist in users table',
                 'description.required' => 'Description is required',
                 'description.string' => 'Description must be a string',
                 'date.required' => 'Date is required',
                 'date.date' => 'Date must be a date',
                 'type.required' => 'Type is required',
-                'type.in' => 'Type must be either Online or Offline',
                 'place.required' => 'Place is required',
             ]);
 
@@ -84,12 +90,12 @@ class MeetingController extends Controller
             }
 
             $meeting = new Meeting();
-            $meeting->project_id = request('project_id');
-            $meeting->user_id = request('user_id');
-            $meeting->description = request('description');
-            $meeting->date = request('date');
-            $meeting->type = request('type');
-            $meeting->place = request('place');
+            $meeting->project_id = $request->project_id;
+            $meeting->user_id = $request->user_id;
+            $meeting->description = $request->description;
+            $meeting->date = $request->date;
+            $meeting->type = $request->type;
+            $meeting->place = $request->place;
             $meeting->save();
 
             return response()->json([
@@ -104,6 +110,7 @@ class MeetingController extends Controller
             ], 500);
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -131,7 +138,7 @@ class MeetingController extends Controller
                 'user_id' => 'required|integer',
                 'description' => 'required|string',
                 'date' => 'required|date',
-                'type' => 'required|in:Online,Offline',
+                'type' => 'required',
                 'place' => 'required',
             ], [
                 'project_id.required' => 'Project ID is required',
@@ -143,7 +150,6 @@ class MeetingController extends Controller
                 'date.required' => 'Date is required',
                 'date.date' => 'Date must be a date',
                 'type.required' => 'Type is required',
-                'type.in' => 'Type must be either Online or Offline',
                 'place.required' => 'Place is required',
             ]);
 

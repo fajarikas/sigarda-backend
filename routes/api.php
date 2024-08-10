@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\API\Dashboard\DashboardController;
 use App\Http\Controllers\API\Location\LocationController;
 use App\Http\Controllers\API\Meeting\MeetingController;
 use App\Http\Controllers\API\Notification\NotificationController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\ShiftController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,9 +33,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
 
+
+// Route::post('/login', function (Request $request) {
+//     // Validasi request
+
+// });
+
+
 Route::group(['middleware' => 'auth:sanctum'], function () {
-
-
     Route::resource('/user', UserController::class);
     Route::resource('/project', ProjectController::class);
     Route::resource('/meeting', MeetingController::class);
@@ -44,4 +51,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     route::resource('/schedule', ScheduleController::class);
     route::resource('/scheduled/user', ScheduledUserController::class);
     Route::resource('/location', LocationController::class);
+    Route::resource('/dashboard', DashboardController::class);
 });
