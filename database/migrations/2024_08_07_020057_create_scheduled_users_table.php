@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('scheduled_users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('schedule_id')->references('id')->on('schedules')->onDelete('cascade');
+            $table->foreignId('schedule_id')->nullable()->references('id')->on('schedules')->onDelete('cascade');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

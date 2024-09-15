@@ -19,8 +19,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
+        'role',
+        'gender'
     ];
 
     /**
@@ -66,5 +69,10 @@ class User extends Authenticatable
     public function schedule()
     {
         return $this->hasMany(Schedule::class);
+    }
+
+    public function scheduled_user()
+    {
+        return $this->hasMany(ScheduledUser::class);
     }
 }

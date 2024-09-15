@@ -23,7 +23,7 @@ class ScheduledUserController extends Controller
                     'id' => $data->id,
                     'schedule_id' => $data->schedule_id,
                     'user_id' => $data->user_id,
-                    'schedule' => $data->schedule->name,
+                    'schedule' => $data->schedule ? $data->schedule->name : null,
                     'user' => $data->user->name,
                 ];
             }
@@ -55,11 +55,10 @@ class ScheduledUserController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'schedule_id' => 'required|integer',
+                'schedule_id' => 'nullable',
                 'user_id' => 'required|integer',
             ], [
-                'schedule_id.required' => 'Schedule ID is required',
-                'schedule_id.integer' => 'Schedule ID must be an integer',
+                // 'schedule_id.integer' => 'Schedule ID must be an integer if provided',
                 'user_id.required' => 'User ID is required',
                 'user_id.integer' => 'User ID must be an integer',
             ]);
@@ -71,8 +70,8 @@ class ScheduledUserController extends Controller
             }
 
             $scheduledUser = new ScheduledUser();
-            $scheduledUser->schedule_id = request('schedule_id');
-            $scheduledUser->user_id = request('user_id');
+            $scheduledUser->schedule_id = $request->input('schedule_id', null);
+            $scheduledUser->user_id = $request->input('user_id');
             $scheduledUser->save();
 
             return response()->json([
@@ -82,7 +81,7 @@ class ScheduledUserController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 'error' => [
-                    "message" => $e->getMessage(),
+                    'message' => $e->getMessage(),
                 ]
             ], 500);
         }
@@ -99,9 +98,7 @@ class ScheduledUserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-    }
+    public function edit(string $id) {}
 
     /**
      * Update the specified resource in storage.
@@ -110,10 +107,10 @@ class ScheduledUserController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'schedule_id' => 'required|integer',
+                'schedule_id' => 'integer',
                 'user_id' => 'required|integer',
             ], [
-                'schedule_id.required' => 'Schedule ID is required',
+                // 'schedule_id.required' => 'Schedule ID is required',
                 'schedule_id.integer' => 'Schedule ID must be an integer',
                 'user_id.required' => 'User ID is required',
                 'user_id.integer' => 'User ID must be an integer',
