@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class ScheduledUser extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'schedule_id',
+    ];
+
     public function schedule()
     {
         return $this->belongsTo(Schedule::class);
