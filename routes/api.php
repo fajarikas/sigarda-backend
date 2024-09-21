@@ -7,6 +7,8 @@
     use App\Http\Controllers\API\Notification\NotificationController;
     use App\Http\Controllers\API\Project\ProjectController;
     use App\Http\Controllers\API\Schedule\ScheduleController;
+    use App\Http\Controllers\API\ScheduleAPI\ScheduleAPIController;
+    use App\Http\Controllers\ScheduleDetailController;
     use App\Http\Controllers\API\Schedule\ScheduledUserController;
     use App\Http\Controllers\ShiftChangeController;
     use App\Http\Controllers\API\User\UserController;
@@ -52,4 +54,7 @@
         route::resource('/scheduled/user', ScheduledUserController::class);
         Route::resource('/location', LocationController::class);
         Route::resource('/dashboard', DashboardController::class);
+        Route::resource('/schedule-detail', ScheduleDetailController::class);
+        Route::get('/user/{userId}/schedule', [ScheduleAPIController::class, 'getUserSchedule']);
+        Route::get('/schedule-detail/schedule/{schedule_id}', [ScheduleDetailController::class, 'getByScheduleId']);
     });
