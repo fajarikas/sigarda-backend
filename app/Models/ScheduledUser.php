@@ -18,7 +18,10 @@ class ScheduledUser extends Model
     {
         return $this->belongsTo(Schedule::class);
     }
-
+    public function scheduleDetails()
+    {
+        return $this->hasMany(ScheduleDetail::class, 'scheduled_user_id');
+    }
     public function user()
     {
         return $this->belongsTo(User::class);

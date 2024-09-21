@@ -8,9 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Schedule extends Model
 {
     use HasFactory;
-
-    public function scheduled_user()
+    public function scheduleDetails()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(ScheduleDetail::class);
+    }
+
+    public function scheduleUsers()
+    {
+        return $this->hasMany(ScheduledUser::class);
     }
 }
